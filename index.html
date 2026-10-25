@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Dental Clinic | عيادة أورا لأسنان المستقبل</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Cairo & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0A2540',
+                        secondary: '#0066FF',
+                        accent: '#00D4FF',
+                        darkBg: '#061325',
+                        cardBg: 'rgba(255, 255, 255, 0.05)',
+                        glassBorder: 'rgba(255, 255, 255, 0.1)'
+                    },
+                    fontFamily: {
+                        arabic: ['Cairo', 'sans-serif'],
+                        latin: ['Plus Jakarta Sans', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #061325;
+            color: #f8fafc;
+            overflow-x: hidden;
+        }
+        [dir="ltr"] body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(10, 37, 64, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(0, 212, 255, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px -10px rgba(0, 102, 255, 0.3);
+        }
+        .pulse-emergency {
+            animation: pulseGlow 2s infinite;
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .page-view {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        .page-view.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #061325; }
+        ::-webkit-scrollbar-thumb { background: #0066FF; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00D4FF; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-accent selection:text-primary">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/10 px-4 lg:px-12 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center space-x-3 rtl:space-x-reverse cursor-pointer" onclick="switchPage('home')">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-secondary to-accent flex items-center justify-center shadow-lg shadow-secondary/30 text-white font-bold text-2xl">
+                    <i class="fa-solid fa-tooth"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-xl tracking-wide bg-gradient-to-r from-white via-cyan-100 to-accent bg-clip-text text-transparent" data-i18n="brandName">AURA DENTAL</h1>
+                    <p class="text-xs text-cyan-300/80 font-medium" data-i18n="brandSub">عـيادة الأسـنان المتطورة</p>
+                </div>
+            </div>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center space-x-1 rtl:space-x-reverse text-sm font-semibold">
+                <button onclick="switchPage('home')" class="nav-btn px-4 py-2 rounded-lg text-cyan-300 bg-white/5 transition" data-target="home" data-i18n="navHome">الرئيسية والمقر</button>
+                <button onclick="switchPage('services')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:text-cyan-300 hover:bg-white/5 transition" data-target="services" data-i18n="navServices">الخدمات</button>
+                <button onclick="switchPage('booking')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:text-cyan-300 hover:bg-white/5 transition" data-target="booking" data-i18n="navBooking">حجز موعد</button>
+                <button onclick="switchPage('hours')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:text-cyan-300 hover:bg-white/5 transition" data-target="hours" data-i18n="navHours">أوقات العمل</button>
+                <button onclick="switchPage('emergency')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:text-red-400 hover:bg-white/5 transition flex items-center gap-1.5" data-target="emergency">
+                    <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                    <span data-i18n="navEmergency">الاستعجالات</span>
+                </button>
+                <button onclick="switchPage('contact')" class="nav-btn px-4 py-2 rounded-lg text-slate-300 hover:text-cyan-300 hover:bg-white/5 transition" data-target="contact" data-i18n="navContact">اتصل بنا</button>
+            </nav>
+
+            <!-- Actions & Lang Switcher -->
+            <div class="flex items-center space-x-3 rtl:space-x-reverse">
+                <button onclick="toggleLanguage()" class="px-3 py-1.5 rounded-lg border border-accent/40 bg-accent/10 text-accent font-bold text-xs hover:bg-accent/20 transition flex items-center gap-1">
+                    <i class="fa-solid fa-globe"></i>
+                    <span id="langLabel">FR / العربية</span>
+                </button>
+
+                <a href="tel:+213555000000" class="hidden sm:flex items-center gap-2 bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-lg shadow-red-600/30">
+                    <i class="fa-solid fa-phone-volume animate-bounce"></i>
+                    <span data-i18n="emergencyCallBtn">طوارئ 24/7</span>
+                </a>
+
+                <!-- Mobile Menu Button -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-cyan-300 p-2 text-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Menu -->
+        <div id="mobileMenu" class="hidden md:hidden mt-4 pt-4 border-t border-white/10 flex flex-col space-y-2">
+            <button onclick="switchPage('home'); toggleMobileMenu();" class="text-start px-4 py-2.5 rounded-lg text-cyan-300 bg-white/5" data-i18n="navHome">الرئيسية والمقر</button>
+            <button onclick="switchPage('services'); toggleMobileMenu();" class="text-start px-4 py-2.5 rounded-lg text-slate-200 hover:bg-white/5" data-i18n="navServices">الخدمات</button>
+            <button onclick="switchPage('booking'); toggleMobileMenu();" class="text-start px-4 py-2.5 rounded-lg text-slate-200 hover:bg-white/5" data-i18n="navBooking">حجز موعد</button>
+            <button onclick="switchPage('hours'); toggleMobileMenu();" class="text-start px-4 py-2.5 rounded-lg text-slate-200 hover:bg-white/5" data-i18n="navHours">أوقات العمل</button>
+            <button onclick="switchPage('emergency'); toggleMobileMenu();" class="text-start px-4 py-2.5 rounded-lg text-red-400 hover:bg-white/5 flex items-center justify-between">
+                <span data-i18n="navEmergency">الاستعجالات</span>
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+            </button>
+            <button onclick="switchPage('contact'); toggleMobileMenu();" class="text-start px-4 py-2.5 rounded-lg text-slate-200 hover:bg-white/5" data-i18n="navContact">اتصل بنا</button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER (PAGES VIEW) -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 lg:px-12 py-8">
+
+        <!-- ================= PAGE 1: HOME & FACILITY ================= -->
+        <div id="page-home" class="page-view active space-y-16">
+            <!-- Hero Intro Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent/10 border border-accent/30 text-accent text-xs font-semibold">
+                        <i class="fa-solid fa-award"></i>
+                        <span data-i18n="heroBadge">العيادة الأولى للرعاية الرقمية والجمالية</span>
+                    </div>
+                    <h1 class="text-4xl lg:text-6xl font-black leading-tight text-white" data-i18n="heroTitle">
+                        ابتسامة أحلامك <br><span class="bg-gradient-to-r from-accent via-blue-400 to-secondary bg-clip-text text-transparent">تبدأ من هنا بمعايير عالمية</span>
+                    </h1>
+                    <p class="text-slate-300 text-base lg:text-lg leading-relaxed" data-i18n="heroDesc">
+                        نقدم لكم أحدث تقنيات طب الأسنان الرقمي في بيئة استثنائية تجمع بين الفخامة، التعقيم الفائق، والرعاية الطبية بأيدي أخصائيين محترفين.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="switchPage('booking')" class="bg-gradient-to-r from-secondary to-accent hover:opacity-95 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-secondary/30 transition transform hover:-translate-y-0.5 flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span data-i18n="bookNowBtn">احجز موعدك الآن</span>
+                        </button>
+                        <button onclick="switchPage('services')" class="glass-card hover:bg-white/10 text-cyan-300 font-bold px-6 py-3.5 rounded-xl transition flex items-center gap-2">
+                            <i class="fa-solid fa-stethoscope"></i>
+                            <span data-i18n="exploreServicesBtn">استكشف خدماتنا</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hero Visual / Facility Preview Card -->
+                <div class="relative">
+                    <div class="absolute -inset-1 rounded-3xl bg-gradient-to-r from-secondary to-accent opacity-30 blur-xl"></div>
+                    <div class="relative glass-panel p-6 lg:p-8 rounded-3xl space-y-6">
+                        <div class="flex items-center justify-between border-b border-white/10 pb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center text-accent">
+                                    <i class="fa-solid fa-hospital text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white text-sm" data-i18n="clinicPreviewTitle">عيادة أورا الفاخرة</h3>
+                                    <p class="text-xs text-slate-400" data-i18n="clinicPreviewSub">التجهيزات الطبية الأحدث لعام 2026</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 text-xs font-semibold flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                                <span data-i18n="openStatus">مفتوح الآن</span>
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="glass-card p-4 rounded-2xl text-center space-y-1">
+                                <i class="fa-solid fa-microchip text-accent text-xl mb-1"></i>
+                                <h4 class="font-bold text-white text-sm" data-i18n="stat1Title">مسح رقمي 3D</h4>
+                                <p class="text-xs text-slate-400" data-i18n="stat1Desc">دقة عالية بدون طبعة تقليدية</p>
+                            </div>
+                            <div class="glass-card p-4 rounded-2xl text-center space-y-1">
+                                <i class="fa-solid fa-shield-halved text-secondary text-xl mb-1"></i>
+                                <h4 class="font-bold text-white text-sm" data-i18n="stat2Title">تعقيم معتمد</h4>
+                                <p class="text-xs text-slate-400" data-i18n="stat2Desc">أعلى معايير الأمان الصحي</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/5 p-4 rounded-2xl flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <i class="fa-solid fa-clock text-accent"></i>
+                                <span class="text-xs text-slate-300" data-i18n="workingDaysText">السبت - الخميس: 09:00 - 20:00</span>
+                            </div>
+                            <button onclick="switchPage('hours')" class="text-xs text-accent font-bold hover:underline" data-i18n="detailsLink">التفاصيل</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Clinic & Facility Section -->
+            <div class="glass-panel p-8 lg:p-12 rounded-3xl space-y-8">
+                <div class="text-center max-w-2xl mx-auto space-y-3">
+                    <h2 class="text-2xl lg:text-3xl font-black text-white" data-i18n="aboutTitle">تعرف على عيادتنا ومقرنا الفاخر</h2>
+                    <p class="text-slate-300 text-sm lg:text-base" data-i18n="aboutSubtitle">صُممت عيادتنا خصيصاً لتمنحك شعوراً بالراحة والاسترخاء بعيداً عن توتر عيادات الأسنان التقليدية.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary text-xl">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="facility1Title">موقع استراتيجي وسهل الوصول</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed" data-i18n="facility1Desc">تقع العيادة في قلب المدينة في موقع هادئ يسهل الوصول إليه، مع توفر مواقف خاصة محروسة لسيارات المرضى.</p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center text-accent text-xl">
+                            <i class="fa-solid fa-couch"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="facility2Title">قاعة انتظار فاخرة ومريحة</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed" data-i18n="facility2Desc">استمتع ببيئة هادئة ومكيفة مع مشروبات ضيافة مجانية وشاشات ذكية لضمان تجربة انتظار مريحة للغاية لك ولعائلتك.</p>
+                    </div>
+
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 text-xl">
+                            <i class="fa-solid fa-laptop-medical"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="facility3Title">غرف علاج مجهزة بالكامل</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed" data-i18n="facility3Desc">وحدات علاج أسنان ذكية مزودة بشاشات تفاعلية لعرض تشخيص الأسنان بدقة تامة وبأحدث وحدات الليزر العالمية.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 2: SERVICES ================= -->
+        <div id="page-services" class="page-view space-y-8">
+            <div class="text-center max-w-2xl mx-auto space-y-3">
+                <h2 class="text-3xl font-black text-white" data-i18n="servicesMainTitle">خدماتنا الطبية المتميزة</h2>
+                <p class="text-slate-300 text-sm" data-i18n="servicesMainSub">نقدم باقة شاملة من علاجات الأسنان التجميلية والعلاجية باستخدام أحدث التقنيات الرقمية.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Service 1 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center text-secondary text-xl">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="srv1Title">تبييض الأسنان بالليزر</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed" data-i18n="srv1Desc">استعد إشراقة ابتسامتك وبياض أسنانك الناصع في جلسة واحدة مدتها 45 دقيقة بأحدث تقنيات الليزر الآمن.</p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-accent font-bold" data-i18n="srv1Price">ابتداءً من 15,000 دج</span>
+                        <button onclick="selectServiceAndBook('تبييض الأسنان بالليزر')" class="bg-secondary hover:bg-secondary/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition" data-i18n="bookServiceBtn">حجز هذه الخدمة</button>
+                    </div>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center text-accent text-xl">
+                            <i class="fa-solid fa-tooth"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="srv2Title">زراعة الأسنان الرقمية</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed" data-i18n="srv2Desc">تعويض الأسنان المفقودة بغرسات تيتانيوم سويسرية عالية الجودة مع توجيه ثلاثي الأبعاد لضمان أعلى نسبة نجاح.</p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-accent font-bold" data-i18n="srv2Price">استشارة تقييم مجانية</span>
+                        <button onclick="selectServiceAndBook('زراعة الأسنان الرقمية')" class="bg-secondary hover:bg-secondary/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition" data-i18n="bookServiceBtn">حجز هذه الخدمة</button>
+                    </div>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center text-purple-400 text-xl">
+                            <i class="fa-solid fa-face-smile"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="srv3Title">ابتسامة هوليود (Veneers)</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed" data-i18n="srv3Desc">الحل الأمثل لأسنان متناسقة، بيضاء، وخالية من العيوب باستخدام قشور البورسلين أو الـ E-max الرقيقة الفاخرة.</p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-accent font-bold" data-i18n="srv3Price">حسب الحالة والتشخيص</span>
+                        <button onclick="selectServiceAndBook('ابتسامة هوليود')" class="bg-secondary hover:bg-secondary/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition" data-i18n="bookServiceBtn">حجز هذه الخدمة</button>
+                    </div>
+                </div>
+
+                <!-- Service 4 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400 text-xl">
+                            <i class="fa-solid fa-stethoscope"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="srv4Title">علاج الجذور والعصب</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed" data-i18n="srv4Desc">علاج الآلام والتسوس العميقة بأجهزة المجهر الإلكتروني وأحدث أدوات التنظيف الدوارة ودون أي ألم.</p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-accent font-bold" data-i18n="srv4Price">ابتداءً من 8,000 دج</span>
+                        <button onclick="selectServiceAndBook('علاج الجذور والعصب')" class="bg-secondary hover:bg-secondary/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition" data-i18n="bookServiceBtn">حجز هذه الخدمة</button>
+                    </div>
+                </div>
+
+                <!-- Service 5 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 text-xl">
+                            <i class="fa-solid fa-teeth"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="srv5Title">تقويم الأسنان الشفاف</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed" data-i18n="srv5Desc">تصحيح اعوجاج الأسنان بدون أسلاك معدنية ظاهرة باستخدام القوالب الشفافة غير المرئية والمريحة.</p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-accent font-bold" data-i18n="srv5Price">استشارة تقويم متقدمة</span>
+                        <button onclick="selectServiceAndBook('تقويم الأسنان الشفاف')" class="bg-secondary hover:bg-secondary/80 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition" data-i18n="bookServiceBtn">حجز هذه الخدمة</button>
+                    </div>
+                </div>
+
+                <!-- Service 6 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <div class="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center text-red-400 text-xl">
+                            <i class="fa-solid fa-kit-medical"></i>
+                        </div>
+                        <h3 class="font-bold text-white text-lg" data-i18n="srv6Title">الاستعجالات وطوارئ الأسنان</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed" data-i18n="srv6Desc">خدمة طوارئ فورية لعلاج الآلام الحادة، الكسور المفاجئة، والنزيف على مدار 24 ساعة طوال أيام الأسبوع.</p>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                        <span class="text-xs text-red-400 font-bold" data-i18n="srv6Price">دعم طوارئ 24/7</span>
+                        <button onclick="switchPage('emergency')" class="bg-red-600 hover:bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition" data-i18n="emergencyAction">طوارئ فورية</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 3: BOOKING VIA WHATSAPP ================= -->
+        <div id="page-booking" class="page-view max-w-2xl mx-auto space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="text-3xl font-black text-white" data-i18n="bookingMainTitle">حجز موعد إلكتروني مباشر</h2>
+                <p class="text-slate-300 text-sm" data-i18n="bookingMainSub">املأ الاستمارة أدناه وسيتم تحويلك فوراً لتأكيد الموعد عبر الواتساب معنا.</p>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl space-y-6 shadow-2xl">
+                <form id="whatsappForm" onsubmit="sendToWhatsApp(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-slate-300" data-i18n="formName">الاسم الكامل *</label>
+                            <input type="text" id="patientName" required placeholder="مثال: أمين بن خيرة" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent transition">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-slate-300" data-i18n="formPhone">رقم الهاتف *</label>
+                            <input type="tel" id="patientPhone" required placeholder="مثال: 0555000000" class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent transition">
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-300" data-i18n="formService">الخدمة المطلوبة *</label>
+                        <select id="patientService" class="w-full bg-[#091a30] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent transition">
+                            <option value="تبييض الأسنان بالليزر" data-i18n="opt1">تبييض الأسنان بالليزر</option>
+                            <option value="زراعة الأسنان الرقمية" data-i18n="opt2">زراعة الأسنان الرقمية</option>
+                            <option value="ابتسامة هوليود" data-i18n="opt3">ابتسامة هوليود</option>
+                            <option value="علاج الجذور والعصب" data-i18n="opt4">علاج الجذور والعصب</option>
+                            <option value="تقويم الأسنان الشفاف" data-i18n="opt5">تقويم الأسنان الشفاف</option>
+                            <option value="استشارة عامة وتشخيص" data-i18n="opt6">استشارة عامة وتشخيص</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-slate-300" data-i18n="formDate">التاريخ المفضل *</label>
+                            <input type="date" id="patientDate" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent transition">
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-slate-300" data-i18n="formTime">الوقت المفضل *</label>
+                            <select id="patientTime" class="w-full bg-[#091a30] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent transition">
+                                <option value="09:00 صباحاً - 11:00 صباحاً">09:00 AM - 11:00 AM</option>
+                                <option value="11:00 صباحاً - 01:00 ظهراً">11:00 AM - 01:00 PM</option>
+                                <option value="02:00 مساءً - 05:00 مساءً">02:00 PM - 05:00 PM</option>
+                                <option value="05:00 مساءً - 08:00 مساءً">05:00 PM - 08:00 PM</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-semibold text-slate-300" data-i18n="formNotes">ملاحظات أو أعراض إضافية (اختياري)</label>
+                        <textarea id="patientNotes" rows="3" placeholder="أكتب أي تفاصيل أخرى عن حالتك..." class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-accent transition resize-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-emerald-600 to-teal-500 hover:opacity-95 text-white font-bold py-4 rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2 text-base">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span data-i18n="submitWhatsAppBtn">إرسال الموعد عبر الواتساب</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 4: WORKING HOURS ================= -->
+        <div id="page-hours" class="page-view max-w-3xl mx-auto space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="text-3xl font-black text-white" data-i18n="hoursMainTitle">أوقات العمل والمواعيد</h2>
+                <p class="text-slate-300 text-sm" data-i18n="hoursMainSub">نستقبلكم طوال أيام الأسبوع باستثناء الجمعة، مع توفر خط استعجالات دائم.</p>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl space-y-6">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-regular fa-calendar-days text-accent text-xl"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm" data-i18n="dayRange1">السبت - الأربعاء</h4>
+                                <p class="text-xs text-slate-400" data-i18n="dayRange1Sub">الأيام العادية</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-xl bg-accent/10 text-accent font-bold text-xs">09:00 AM - 08:00 PM</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-regular fa-calendar-days text-accent text-xl"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm" data-i18n="dayRange2">الخميس</h4>
+                                <p class="text-xs text-slate-400" data-i18n="dayRange2Sub">نهاية الأسبوع</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-xl bg-accent/10 text-accent font-bold text-xs">09:00 AM - 05:00 PM</span>
+                    </div>
+
+                    <div class="flex items-center justify-between p-4 rounded-2xl bg-red-500/10 border border-red-500/20">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-triangle-exclamation text-red-400 text-xl"></i>
+                            <div>
+                                <h4 class="font-bold text-white text-sm" data-i18n="dayRange3">الجمعة (الاستعجالات فقط)</h4>
+                                <p class="text-xs text-red-300" data-i18n="dayRange3Sub">الطوارئ والآلام الحادة</p>
+                            </div>
+                        </div>
+                        <span class="px-3 py-1 rounded-xl bg-red-500/20 text-red-400 font-bold text-xs" data-i18n="emergency247Badge">24 / 7 متاح</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 5: EMERGENCIES 24/7 ================= -->
+        <div id="page-emergency" class="page-view max-w-2xl mx-auto space-y-8 text-center">
+            <div class="space-y-3">
+                <div class="w-16 h-16 rounded-3xl bg-red-500/20 text-red-500 text-3xl mx-auto flex items-center justify-center pulse-emergency">
+                    <i class="fa-solid fa-phone-volume"></i>
+                </div>
+                <h2 class="text-3xl font-black text-white" data-i18n="emMainTitle">قسم الاستعجالات والطوارئ 24/7</h2>
+                <p class="text-slate-300 text-sm" data-i18n="emMainSub">إذا كنت تعاني من ألم حاد، نزيف مستمر، أو كسر مفاجئ في الأسنان، نحن في خدمتك فوراً.</p>
+            </div>
+
+            <div class="glass-panel p-8 rounded-3xl space-y-6 border-red-500/30">
+                <div class="p-6 rounded-2xl bg-red-600/10 border border-red-600/30 space-y-2">
+                    <h3 class="font-bold text-white text-lg" data-i18n="emBoxTitle">اتصل بخط الطوارئ المباشر الآن</h3>
+                    <p class="text-xs text-slate-300" data-i18n="emBoxDesc">فريق الأطباء المناوب في أتم الاستعداد لاستقبال حالتك في أي وقت ليلاً أو نهاراً.</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <a href="tel:+213555000000" class="bg-red-600 hover:bg-red-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-red-600/30 transition flex items-center justify-center gap-2 text-base">
+                        <i class="fa-solid fa-phone"></i>
+                        <span data-i18n="emCallDirect">اتصال طارئ فوري</span>
+                    </a>
+                    <a href="https://wa.me/213555000000?text=سلام، عندي حالة طارئة في الأسنان وتحتاج تدخل عاجل!" target="_blank" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-emerald-600/30 transition flex items-center justify-center gap-2 text-base">
+                        <i class="fa-brands fa-whatsapp"></i>
+                        <span data-i18n="emWhatsappDirect">مراسلة الطوارئ واتساب</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE 6: CONTACT ================= -->
+        <div id="page-contact" class="page-view max-w-3xl mx-auto space-y-8">
+            <div class="text-center space-y-3">
+                <h2 class="text-3xl font-black text-white" data-i18n="contactMainTitle">اتصل بنا وموقعنا</h2>
+                <p class="text-slate-300 text-sm" data-i18n="contactMainSub">يسعدنا الإجابة عن كل استفساراتكم وزيارتكم في مقر العيادة.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-3xl space-y-6">
+                    <h3 class="font-bold text-white text-lg border-b border-white/10 pb-3" data-i18n="contactInfoTitle">معلومات الاتصال</h3>
+                    
+                    <div class="space-y-4 text-sm">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-accent/20 text-accent flex items-center justify-center">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block" data-i18n="addrLabel">العنوان</span>
+                                <span class="text-white font-semibold" data-i18n="addrValue">شارع الرئيسية، العيادات الطبية الطابق 2، الجزائر</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-secondary/20 text-secondary flex items-center justify-center">
+                                <i class="fa-solid fa-phone"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block" data-i18n="phoneLabel">الهاتف</span>
+                                <span class="text-white font-semibold" dir="ltr">+213 555 00 00 00</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <span class="text-xs text-slate-400 block" data-i18n="waLabel">الواتساب</span>
+                                <span class="text-white font-semibold" dir="ltr">+213 555 00 00 00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <h3 class="font-bold text-white text-lg border-b border-white/10 pb-3" data-i18n="mapTitle">موقع المقر على الخريطة</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed" data-i18n="mapDesc">تقع العيادة في موقع يسهل الوصول إليه مع توفر مساحات واسعة لركن السيارات بالقرب من المدخل الرئيسي.</p>
+                    </div>
+                    <div class="bg-white/5 p-6 rounded-2xl text-center space-y-3 border border-white/10">
+                        <i class="fa-solid fa-map-location-dot text-accent text-3xl animate-bounce"></i>
+                        <p class="text-xs text-slate-300" data-i18n="gpsText">انقر للملاحة المباشرة عبر تطبيق الخرائط</p>
+                        <a href="https://maps.google.com" target="_blank" class="inline-block bg-accent text-primary font-bold px-4 py-2 rounded-xl text-xs hover:bg-cyan-300 transition" data-i18n="openMapBtn">فتح خريطة Google Maps</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FLOATING EMERGENCY BUTTON -->
+    <div class="fixed bottom-6 end-6 z-40">
+        <button onclick="switchPage('emergency')" class="w-14 h-14 rounded-full bg-red-600 hover:bg-red-500 text-white text-xl flex items-center justify-center shadow-2xl pulse-emergency transition transform hover:scale-110" title="الاستعجالات الطارئة">
+            <i class="fa-solid fa-phone-volume"></i>
+        </button>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="glass-panel border-t border-white/10 mt-16 py-8 px-4 text-center text-xs text-slate-400 space-y-2">
+        <p data-i18n="footerCopy">© 2026 عيادة أورا لأسنان المستقبل. جميع الحقوق محفوظة.</p>
+        <p class="text-cyan-300/80 font-semibold" data-i18n="footerSub">تصميم عراقي/عصري فائق الاحترافية بدعم الواتساب واللغتين العربية والفرنسية</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let currentLang = 'ar';
+
+        const translations = {
+            ar: {
+                brandName: "AURA DENTAL",
+                brandSub: "عـيادة الأسـنان المتطورة",
+                navHome: "الرئيسية والمقر",
+                navServices: "الخدمات",
+                navBooking: "حجز موعد",
+                navHours: "أوقات العمل",
+                navEmergency: "الاستعجالات",
+                navContact: "اتصل بنا",
+                emergencyCallBtn: "طوارئ 24/7",
+                heroBadge: "العيادة الأولى للرعاية الرقمية والجمالية",
+                heroTitle: "ابتسامة أحلامك <br><span class=\"bg-gradient-to-r from-accent via-blue-400 to-secondary bg-clip-text text-transparent\">تبدأ من هنا بمعايير عالمية</span>",
+                heroDesc: "نقدم لكم أحدث تقنيات طب الأسنان الرقمي في بيئة استثنائية تجمع بين الفخامة، التعقيم الفائق، والرعاية الطبية بأيدي أخصائيين محترفين.",
+                bookNowBtn: "احجز موعدك الآن",
+                exploreServicesBtn: "استكشف خدماتنا",
+                clinicPreviewTitle: "عيادة أورا الفاخرة",
+                clinicPreviewSub: "التجهيزات الطبية الأحدث لعام 2026",
+                openStatus: "مفتوح الآن",
+                stat1Title: "مسح رقمي 3D",
+                stat1Desc: "دقة عالية بدون طبعة تقليدية",
+                stat2Title: "تعقيم معتمد",
+                stat2Desc: "أعلى معايير الأمان الصحي",
+                workingDaysText: "السبت - الخميس: 09:00 - 20:00",
+                detailsLink: "التفاصيل",
+                aboutTitle: "تعرف على عيادتنا ومقرنا الفاخر",
+                aboutSubtitle: "صُممت عيادتنا خصيصاً لتمنحك شعوراً بالراحة والاسترخاء بعيداً عن توتر عيادات الأسنان التقليدية.",
+                facility1Title: "موقع استراتيجي وسهل الوصول",
+                facility1Desc: "تقع العيادة في قلب المدينة في موقع هادئ يسهل الوصول إليه، مع توفر مواقف خاصة محروسة لسيارات المرضى.",
+                facility2Title: "قاعة انتظار فاخرة ومريحة",
+                facility2Desc: "استمتع ببيئة هادئة ومكيفة مع مشروبات ضيافة مجانية وشاشات ذكية لضمان تجربة انتظار مريحة للغاية لك ولعائلتك.",
+                facility3Title: "غرف علاج مجهزة بالكامل",
+                facility3Desc: "وحدات علاج أسنان ذكية مزودة بشاشات تفاعلية لعرض تشخيص الأسنان بدقة تامة وبأحدث وحدات الليزر العالمية.",
+                servicesMainTitle: "خدماتنا الطبية المتميزة",
+                servicesMainSub: "نقدم باقة شاملة من علاجات الأسنان التجميلية والعلاجية باستخدام أحدث التقنيات الرقمية.",
+                srv1Title: "تبييض الأسنان بالليزر",
+                srv1Desc: "استعد إشراقة ابتسامتك وبياض أسنانك الناصع في جلسة واحدة مدتها 45 دقيقة بأحدث تقنيات الليزر الآمن.",
+                srv1Price: "ابتداءً من 15,000 دج",
+                srv2Title: "زراعة الأسنان الرقمية",
+                srv2Desc: "تعويض الأسنان المفقودة بغرسات تيتانيوم سويسرية عالية الجودة مع توجيه ثلاثي الأبعاد لضمان أعلى نسبة نجاح.",
+                srv2Price: "استشارة تقييم مجانية",
+                srv3Title: "ابتسامة هوليود (Veneers)",
+                srv3Desc: "الحل الأمثل لأسنان متناسقة، بيضاء، وخالية من العيوب باستخدام قشور البورسلين أو الـ E-max الرقيقة الفاخرة.",
+                srv3Price: "حسب الحالة والتشخيص",
+                srv4Title: "علاج الجذور والعصب",
+                srv4Desc: "علاج الآلام والتسوس العميقة بأجهزة المجهر الإلكتروني وأحدث أدوات التنظيف الدوارة ودون أي ألم.",
+                srv4Price: "ابتداءً من 8,000 دج",
+                srv5Title: "تقويم الأسنان الشفاف",
+                srv5Desc: "تصحيح اعوجاج الأسنان بدون أسلاك معدنية ظاهرة باستخدام القوالب الشفافة غير المرئية والمريحة.",
+                srv5Price: "استشارة تقويم متقدمة",
+                srv6Title: "الاستعجالات وطوارئ الأسنان",
+                srv6Desc: "خدمة طوارئ فورية لعلاج الآلام الحادة، الكسور المفاجئة، والنزيف على مدار 24 ساعة طوال أيام الأسبوع.",
+                srv6Price: "دعم طوارئ 24/7",
+                emergencyAction: "طوارئ فورية",
+                bookServiceBtn: "حجز هذه الخدمة",
+                bookingMainTitle: "حجز موعد إلكتروني مباشر",
+                bookingMainSub: "املأ الاستمارة أدناه وسيتم تحويلك فوراً لتأكيد الموعد عبر الواتساب معنا.",
+                formName: "الاسم الكامل *",
+                formPhone: "رقم الهاتف *",
+                formService: "الخدمة المطلوبة *",
+                opt1: "تبييض الأسنان بالليزر",
+                opt2: "زراعة الأسنان الرقمية",
+                opt3: "ابتسامة هوليود",
+                opt4: "علاج الجذور والعصب",
+                opt5: "تقويم الأسنان الشفاف",
+                opt6: "استشارة عامة وتشخيص",
+                formDate: "التاريخ المفضل *",
+                formTime: "الوقت المفضل *",
+                formNotes: "ملاحظات أو أعراض إضافية (اختياري)",
+                submitWhatsAppBtn: "إرسال الموعد عبر الواتساب",
+                hoursMainTitle: "أوقات العمل والمواعيد",
+                hoursMainSub: "نستقبلكم طوال أيام الأسبوع باستثناء الجمعة، مع توفر خط استعجالات دائم.",
+                dayRange1: "السبت - الأربعاء",
+                dayRange1Sub: "الأيام العادية",
+                dayRange2: "الخميس",
+                dayRange2Sub: "نهاية الأسبوع",
+                dayRange3: "الجمعة (الاستعجالات فقط)",
+                dayRange3Sub: "الطوارئ والآلام الحادة",
+                emergency247Badge: "24 / 7 متاح",
+                emMainTitle: "قسم الاستعجالات والطوارئ 24/7",
+                emMainSub: "إذا كنت تعاني من ألم حاد، نزيف مستمر، أو كسر مفاجئ في الأسنان، نحن في خدمتك فوراً.",
+                emBoxTitle: "اتصل بخط الطوارئ المباشر الآن",
+                emBoxDesc: "فريق الأطباء المناوب في أتم الاستعداد لاستقبال حالتك في أي وقت ليلاً أو نهاراً.",
+                emCallDirect: "اتصال طارئ فوري",
+                emWhatsappDirect: "مراسلة الطوارئ واتساب",
+                contactMainTitle: "اتصل بنا وموقعنا",
+                contactMainSub: "يسعدنا الإجابة عن كل استفساراتكم وزيارتكم في مقر العيادة.",
+                contactInfoTitle: "معلومات الاتصال",
+                addrLabel: "العنوان",
+                addrValue: "شارع الرئيسية، العيادات الطبية الطابق 2، الجزائر",
+                phoneLabel: "الهاتف",
+                waLabel: "الواتساب",
+                mapTitle: "موقع المقر على الخريطة",
+                mapDesc: "تقع العيادة في موقع يسهل الوصول إليه مع توفر مساحات واسعة لركن السيارات بالقرب من المدخل الرئيسي.",
+                gpsText: "انقر للملاحة المباشرة عبر تطبيق الخرائط",
+                openMapBtn: "فتح خريطة Google Maps",
+                footerCopy: "© 2026 عيادة أورا لأسنان المستقبل. جميع الحقوق محفوظة.",
+                footerSub: "تصميم فخم وعصري فائق الاحترافية بدعم الواتساب واللغتين العربية والفرنسية"
+            },
+            fr: {
+                brandName: "AURA DENTAL",
+                brandSub: "Clinique Dentaire Avancée",
+                navHome: "Accueil & Lieu",
+                navServices: "Services",
+                navBooking: "Rendez-vous",
+                navHours: "Horaires",
+                navEmergency: "Urgences",
+                navContact: "Contact",
+                emergencyCallBtn: "Urgences 24/7",
+                heroBadge: "Première Clinique de Soins Numériques et Esthétiques",
+                heroTitle: "Le sourire de vos rêves <br><span class=\"bg-gradient-to-r from-accent via-blue-400 to-secondary bg-clip-text text-transparent\">commence ici aux normes mondiales</span>",
+                heroDesc: "Nous vous offrons les dernières technologies dentaires numériques dans un cadre d'exception alliant luxe, stérilisation absolue et soins d'experts.",
+                bookNowBtn: "Prendre RDV",
+                exploreServicesBtn: "Nos Services",
+                clinicPreviewTitle: "Clinique Aura Luxury",
+                clinicPreviewSub: "Équipements médicaux de pointe 2026",
+                openStatus: "Ouvert Actuellement",
+                stat1Title: "Scan 3D Numérique",
+                stat1Desc: "Haute précision sans empreinte classique",
+                stat2Title: "Stérilisation Certifiée",
+                stat2Desc: "Normes de sécurité sanitaire optimales",
+                workingDaysText: "Samedi - Jeudi : 09:00 - 20:00",
+                detailsLink: "Détails",
+                aboutTitle: "Découvrez notre clinique et nos locaux",
+                aboutSubtitle: "Notre clinique a été spécialement conçue pour vous offrir confort et sérénité loin du stress dentaire traditionnel.",
+                facility1Title: "Emplacement stratégique et accessible",
+                facility1Desc: "Située au cœur de la ville dans un cadre calme, dotée d'un parking privé et sécurisé pour nos patients.",
+                facility2Title: "Salle d'attente luxueuse",
+                facility2Desc: "Profitez d'un environnement calme et climatisé avec rafraîchissements offerts et écrans interactifs.",
+                facility3Title: "Salles de soins ultra-équipées",
+                facility3Desc: "Unités dentaires intelligentes dotées de technologies laser de pointe pour des diagnostics parfaits.",
+                servicesMainTitle: "Nos Services Dentaires d'Excellence",
+                servicesMainSub: "Une gamme complète de soins esthétiques et thérapeutiques utilisant les technologies de pointe.",
+                srv1Title: "Blanchiment Dentaire Laser",
+                srv1Desc: "Retrouvez un sourire éclatant et des dents blanches en une seule séance de 45 minutes.",
+                srv1Price: "À partir de 15 000 DZD",
+                srv2Title: "Implantologie Numérique",
+                srv2Desc: "Remplacement des dents manquantes par des implants suisses de haute qualité guidés par 3D.",
+                srv2Price: "Consultation & Bilan Gratuits",
+                srv3Title: "Sourire Hollywoodien (Veneers)",
+                srv3Desc: "La solution parfaite pour des dents harmonieuses et éclatantes avec des facettes en porcelaine ou E-max.",
+                srv3Price: "Sur devis et diagnostic",
+                srv4Title: "Traitement de Canal & Endodontie",
+                srv4Desc: "Traitement des douleurs et caries profondes sous microscope électronique sans aucune douleur.",
+                srv4Price: "À partir de 8 000 DZD",
+                srv5Title: "Orthodontie Invisible",
+                srv5Desc: "Correction de l'alignement dentaire sans bagues métalliques grâce aux gouttières transparentes.",
+                srv5Price: "Consultation orthodontique",
+                srv6Title: "Urgences & Soins 24/7",
+                srv6Desc: "Service d'urgence immédiat pour douleurs aiguës, fractures et saignements 24h/24 et 7j/7.",
+                srv6Price: "Support d'urgence 24/7",
+                emergencyAction: "Urgence immédiate",
+                bookServiceBtn: "Réserver ce service",
+                bookingMainTitle: "Réservation de RDV en Ligne",
+                bookingMainSub: "Remplissez le formulaire ci-dessous pour confirmer instantanément votre rendez-vous via WhatsApp.",
+                formName: "Nom complet *",
+                formPhone: "Numéro de téléphone *",
+                formService: "Service souhaité *",
+                opt1: "Blanchiment Dentaire Laser",
+                opt2: "Implantologie Numérique",
+                opt3: "Sourire Hollywoodien",
+                opt4: "Traitement de Canal",
+                opt5: "Orthodontie Invisible",
+                opt6: "Consultation générale & Diagnostic",
+                formDate: "Date souhaitée *",
+                formTime: "Heure souhaitée *",
+                formNotes: "Notes ou symptômes (Optionnel)",
+                submitWhatsAppBtn: "Envoyer le RDV sur WhatsApp",
+                hoursMainTitle: "Horaires de Travail",
+                hoursMainSub: "Nous vous accueillons tous les jours de la semaine sauf le vendredi avec service d'urgence permanent.",
+                dayRange1: "Samedi - Mercredi",
+                dayRange1Sub: "Jours de semaine",
+                dayRange2: "Jeudi",
+                dayRange2Sub: "Fin de semaine",
+                dayRange3: "Vendredi (Urgences uniquement)",
+                dayRange3Sub: "Urgences et douleurs aiguës",
+                emergency247Badge: "24 / 7 Disponible",
+                emMainTitle: "Service des Urgences 24/7",
+                emMainSub: "Si vous souffrez d'une douleur aiguë, d'un saignement ou d'une fracture dentaire, nous sommes à votre service immédiatement.",
+                emBoxTitle: "Appelez notre ligne d'urgence directe",
+                emBoxDesc: "L'équipe médicale de garde est prête à vous recevoir de jour comme de nuit.",
+                emCallDirect: "Appel d'urgence direct",
+                emWhatsappDirect: "WhatsApp Urgences",
+                contactMainTitle: "Contact & Localisation",
+                contactMainSub: "Nous serons ravis de répondre à vos questions et de vous accueillir à la clinique.",
+                contactInfoTitle: "Informations de Contact",
+                addrLabel: "Adresse",
+                addrValue: "Rue Principale, Cliniques Médicales 2ème étage, Alger",
+                phoneLabel: "Téléphone",
+                waLabel: "WhatsApp",
+                mapTitle: "Localisation sur la Carte",
+                mapDesc: "La clinique est facilement accessible et dispose de vastes espaces de stationnement près de l'entrée.",
+                gpsText: "Cliquez pour la navigation directe via GPS",
+                openMapBtn: "Ouvrir Google Maps",
+                footerCopy: "© 2026 Aura Dental Clinic. Tous droits réservés.",
+                footerSub: "Design moderne et professionnel avec support WhatsApp et multilingue"
+            }
+        };
+
+        function switchPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            // Show target page
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            // Scroll to top smoothly
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'fr' : 'ar';
+            const htmlRoot = document.getElementById('htmlRoot');
+            const langLabel = document.getElementById('langLabel');
+
+            if (currentLang === 'fr') {
+                htmlRoot.setAttribute('dir', 'ltr');
+                htmlRoot.setAttribute('lang', 'fr');
+                langLabel.textContent = 'AR / Français';
+            } else {
+                htmlRoot.setAttribute('dir', 'rtl');
+                htmlRoot.setAttribute('lang', 'ar');
+                langLabel.textContent = 'FR / العربية';
+            }
+
+            // Update all translated elements
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function selectServiceAndBook(serviceName) {
+            switchPage('booking');
+            const selectEl = document.getElementById('patientService');
+            // Try to match option
+            for (let i = 0; i < selectEl.options.length; i++) {
+                if (selectEl.options[i].value === serviceName || selectEl.options[i].text.includes(serviceName)) {
+                    selectEl.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+
+        function sendToWhatsApp(e) {
+            e.preventDefault();
+            const name = document.getElementById('patientName').value;
+            const phone = document.getElementById('patientPhone').value;
+            const service = document.getElementById('patientService').value;
+            const date = document.getElementById('patientDate').value;
+            const time = document.getElementById('patientTime').value;
+            const notes = document.getElementById('patientNotes').value;
+
+            const clinicNumber = "213555000000"; // استبدل برقم الواتساب الفعلي للعيادة
+
+            let message = `مرحباً عيادة أورا للأسنان، أرغب في حجز موعد جديد:%0A` +
+                          `- الاسم: ${name}%0A` +
+                          `- الهاتف: ${phone}%0A` +
+                          `- الخدمة: ${service}%0A` +
+                          `- التاريخ: ${date}%0A` +
+                          `- الوقت: ${time}`;
+
+            if (notes.trim() !== "") {
+                message += `%0A- ملاحظات: ${notes}`;
+            }
+
+            const whatsappUrl = `https://wa.me/${clinicNumber}?text=${message}`;
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
